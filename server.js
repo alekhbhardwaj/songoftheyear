@@ -8,8 +8,8 @@ const port = 3000;
 // Middleware to serve static files
 app.use(express.static('public'));
 
-const clientId = '9679576547cf46a295d7a3a4d8aabe31';
-const clientSecret = '76624e353e5c486aba83da1f87c40d8d';
+const clientId = CLIENT_ID;
+const clientSecret = CLIENT_SECRET;
 
 const auth = new google.auth.GoogleAuth({
     keyFile: 'C:\\Users\\Alekh\\SongOfTheYear\\songoftheyear-d44bc7cccd62.json',
@@ -39,7 +39,7 @@ app.get('/token', async (req, res) => {
 app.get('/songs', async (req, res) => {
     const authClient = await auth.getClient();
     const request = {
-        spreadsheetId: '1ZTR0oHd45ovU4EaAtj5dKQcs9qsCdNg_bBQCKnhwV2w',
+        spreadsheetId: SPREADSHEET_ID,
         range: 'Sheet1!A1:A70',
         auth: authClient,
     };
