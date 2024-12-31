@@ -5,11 +5,13 @@ const cors = require('cors');
 const sheets = google.sheets('v4');
 const app = express();
 const port = 3000;
+const nocache = require("nocache");
 
 // Middleware to serve static files
 
 app.use(cors());
 app.use(express.static('public'));
+app.use(nocache());
 
 const clientId = process.env.CLIENT_ID; 
 const clientSecret = process.env.CLIENT_SECRET;
