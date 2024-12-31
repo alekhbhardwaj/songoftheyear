@@ -1,20 +1,20 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 async function getToken() {
     const tokenUrl = 'https://accounts.spotify.com/api/token';
     const authOptions = {
-        method: 'post',
-        url: tokenUrl,
+        method: 'POST',
         headers: {
             Authorization: 'Basic ' + Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64'),
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        data: 'grant_type=client_credentials',
+        body: 'grant_type=client_credentials',
     };
 
     try {
-        const response = await axios(authOptions);
-        return response.data.access_token;
+        const response = await fetch(tokenUrl, authOptions);
+        const data = await response.json();
+        return data.access_token;
     } catch (error) {
         console.error('Error fetching token:', error);
         throw error;
@@ -27,17 +27,15 @@ export default async function handler(req, res) {
 
     try {
         const token = await getToken();
-        const options = {
-            method: 'get',
-            url: `https://api.spotify.com/v1/tracks/${songId}`,
+        const response = await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        };
-
-        const response = await axios(options);
+        });
+        const data = await response.json();
         res.status(200).json({
-            thumbnailUrl: response.data.album.images[0].url,
+            thumbnailUrl: data.album.images[0].url,
             spotifyUrl: `https://open.spotify.com/track/${songId}`,
         });
     } catch (error) {
