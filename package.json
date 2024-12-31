@@ -1,11 +1,20 @@
 {
-  "dependencies": {
-    "axios": "^1.7.9",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "googleapis": "^111.0.0",
-    "nocache": "^4.0.0",
-    "node-fetch": "^3.3.2"
-  }
+  "name": "songoftheyear",
+  "version": "1.0.0",
+  "main": "/api/**/*.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alekhbhardwaj/songoftheyear.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alekhbhardwaj/songoftheyear/issues"
+  },
+  "homepage": "https://github.com/alekhbhardwaj/songoftheyear#readme",
+  "keywords": [],
+  "description": ""
 }
