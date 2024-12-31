@@ -23,12 +23,17 @@ export default async function handler(req, res) {
     try {
         const sheets = google.sheets('v4');
         const response = await sheets.spreadsheets.values.get(request);
-        res.status(200).json(response.data.values.flat());
+        
+        // Flatten the array and remove duplicates using a Set
+        const uniqueValues = [...new Set(response.data.values.flat())];
+
+        res.status(200).json(uniqueValues);
     } catch (error) {
         console.error('Error fetching songs:', error);
         res.status(500).json({ error: 'Failed to fetch songs' });
     }
 }
+
 console.log('Environment Variables:', {
     SPREADSHEET_ID: process.env.SPREADSHEET_ID,
     GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY ? 'Exists' : 'Missing',
