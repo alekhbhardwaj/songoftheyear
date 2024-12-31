@@ -29,3 +29,8 @@ export default async function handler(req, res) {
         res.status(500).json({ error: 'Failed to fetch songs' });
     }
 }
+console.log('Environment Variables:', {
+    SPREADSHEET_ID: process.env.SPREADSHEET_ID,
+    GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY ? 'Exists' : 'Missing',
+    GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+});
