@@ -1,29 +1,24 @@
-import fetch from 'node-fetch';
-
-async function getToken() {
-    const tokenUrl = 'https://accounts.spotify.com/api/token';
-    const authOptions = {
-        method: 'POST',
-        headers: {
-            Authorization: 'Basic ' + Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64'),
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'grant_type=client_credentials',
-    };
-
-    try {
-        const response = await fetch(tokenUrl, authOptions);
-        const data = await response.json();
-        return data.access_token;
-    } catch (error) {
-        console.error('Error fetching token:', error);
-        throw error;
-    }
+// Use dynamic import to load node-fetch
+let fetch;
+try {
+    fetch = (await import('node-fetch')).default;
+} catch (error) {
+    console.error('Failed to import node-fetch:', error);
+    throw error;
 }
 
 export default async function handler(req, res) {
     const { url } = req.query;
     const songId = url.split('/').pop();
+
+    let fetch;
+    try {
+        fetch = (await import('node-fetch')).default; // Dynamically import node-fetch
+    } catch (error) {
+        console.error('Failed to import node-fetch:', error);
+        res.status(500).json({ error: 'Failed to import node-fetch' });
+        return;
+    }
 
     try {
         const token = await getToken();
