@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song Thumbnails</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #020230, #380202); /* Initial gradient */
+            /*transition: background 5s ease; /* Smooth transition for gradient changes */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-family: "Bebas Neue" ,serif;
+            font-size: 5em;
+            color: #ffffff;
+        }
+
+        #image-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+            max-width: 1000px;
+        }
+
+        #image-grid img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 1.0s;
+        }
+
+        #image-grid img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>YOUR SONGS OF THE YEAR</h1>
+    <div id="image-grid"></div>
+
+    <script>
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function setRandomGradient() {
+            const color1 = getRandomColor();
+            const color2 = getRandomColor();
+            document.body.style.background = `linear-gradient( to right, ${color1}, ${color2})`;
+        }
+
+        fetch('/songs')
+            .then(response => response.json())
+            .then(songs => {
+                songs.forEach(songUrl => {
+                    fetch(`/spotify/${encodeURIComponent(songUrl)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const img = document.createElement('img');
+                            img.src = data.thumbnailUrl;
+                            img.addEventListener('click', () => {
+                                window.open(data.spotifyUrl, '_blank');
+                            });
+                            document.getElementById('image-grid').appendChild(img);
+                            //setRandomGradient(); // Change gradient when a new thumbnail is added
+                        })
+                        .catch(error => console.error('Error fetching Spotify data:', error));
+                });
+            })
+            .catch(error => console.error('Error fetching songs:', error));
+    </script>
+</body>
+</html>
