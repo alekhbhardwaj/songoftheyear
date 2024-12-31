@@ -52,16 +52,20 @@
         fetch('/api/songs')
             .then(response => response.json())
             .then(songs => {
+                const seenUrls = new Set(); // To keep track of duplicate URLs
                 songs.forEach(songUrl => {
                     fetch(`/api/spotify/${encodeURIComponent(songUrl)}`)
                         .then(response => response.json())
                         .then(data => {
-                            const img = document.createElement('img');
-                            img.src = data.thumbnailUrl;
-                            img.addEventListener('click', () => {
-                                window.open(data.spotifyUrl, '_blank');
-                            });
-                            document.getElementById('image-grid').appendChild(img);
+                            if (!seenUrls.has(data.thumbnailUrl)) { // Check for duplicate URLs
+                                seenUrls.add(data.thumbnailUrl);
+                                const img = document.createElement('img');
+                                img.src = data.thumbnailUrl;
+                                img.addEventListener('click', () => {
+                                    window.open(data.spotifyUrl, '_blank');
+                                });
+                                document.getElementById('image-grid').appendChild(img);
+                            }
                         })
                         .catch(error => console.error('Error fetching Spotify data:', error));
                 });
