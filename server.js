@@ -6,6 +6,7 @@ const sheets = google.sheets('v4');
 const app = express();
 const port = 3000;
 const nocache = require("nocache");
+require('dotenv').config();
 
 // Middleware to serve static files
 
@@ -15,6 +16,14 @@ app.use(nocache());
 
 const clientId = process.env.CLIENT_ID; 
 const clientSecret = process.env.CLIENT_SECRET;
+
+/*console.log({
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+    private_key: process.env.GOOGLE_PRIVATE_KEY ? 'Exists' : 'Not found',
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+});*/
+
 
 const auth = new google.auth.GoogleAuth({
     credentials: {
