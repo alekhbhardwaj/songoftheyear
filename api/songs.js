@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const authClient = await auth.getClient();
     const request = {
         spreadsheetId: process.env.SPREADSHEET_ID,
-        range: 'Sheet1!A1:A70',
+        range: 'Sheet1!A12:A200',
         auth: authClient,
     };
 
