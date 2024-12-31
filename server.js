@@ -1,11 +1,14 @@
 const express = require('express');
 const axios = require('axios');
 const { google } = require('googleapis');
+const cors = require('cors');
 const sheets = google.sheets('v4');
 const app = express();
 const port = 3000;
 
 // Middleware to serve static files
+
+app.use(cors());
 app.use(express.static('public'));
 
 const clientId = process.env.CLIENT_ID; 
