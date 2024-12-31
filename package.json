@@ -19,6 +19,12 @@
   "keywords": [],
   "description": "",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "nocache": "^4.0.0",
+    "googleapis": "^106.0.0",
+    "got": "^13.0.0",
+    "axios": "^1.7.9"
   }
 }
